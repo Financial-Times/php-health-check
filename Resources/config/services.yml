@@ -1,0 +1,20 @@
+services:
+    health_check.controller:
+        class: FT\HealthCheckBundle\Controller\HealthCheckController
+        arguments:
+            - '@health_check.factory'
+            - '@health_check.service.cache'
+
+    health_check.factory:
+        class: FT\HealthCheckBundle\Factory\HealthCheckResponseFactory
+        arguments:
+            - '%health_check.system_code%'
+            - '%health_check.name%'
+            - '%health_check.description%'
+            - '@monolog.logger'
+
+    health_check.service.cache:
+        class: FT\HealthCheckBundle\Service\CachedHealthCheckService
+        arguments:
+            - '@monolog.logger'
+            - '@service_container'

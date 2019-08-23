@@ -1,0 +1,5 @@
+# HealthCheckBundle
+healthCheck:
+    path: /__health
+    defaults:
+        _controller: health_check.controller:healthCheckAction

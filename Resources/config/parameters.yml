@@ -1,0 +1,9 @@
+parameters:
+    #The system code for your product
+    health_check.system_code: ''
+
+    #The human readable name your product
+    health_check.name: ''
+
+    #The description of your product
+    health_check.description: ''
