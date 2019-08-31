@@ -7,3 +7,7 @@ parameters:
 
     #The description of your product
     health_check.description: ''
+
+    health_check.cache_pool: 'ezpublish.cache_pool'
+
+    health_check.run_first: true

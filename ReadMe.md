@@ -111,5 +111,29 @@ services:
         tags: [{ name: health_check, priority: 20 }]
 ```
 
+## Config options
+There are a few config options that need to be set up for this bundle to correctly function.
+
+```yml
+parameters:
+    #The system code for your product (An internal unique identifier for your product)
+    health_check.system_code: ''
+
+    #The human readable name your product
+    health_check.name: ''
+
+    #The description of your product
+    health_check.description: ''
+
+    #Add the service id for a already initialized Stash. This option needed to be set in order for health check caching to work. In the event that this is not set all healthchecks will be run every time the __health endpoint is called. (For eZ Publish/Platform use 'ezpublish.cache_pool')
+    health_check.cache_pool: ''
+
+    # This option is used to force the __health endpoint to run before anything else. This is useful for when event listeners that run before requests rely on external services that are covered in other healthchecks. (For instance an auth service that runs before every request that could fail if the session service was down) 
+    health_check.run_first: false
+
+    # This parameter is used to set the priority of the event listener added in 'health_check.run_first'. This can be used to stop the event conflicting with other high priority events that might need to run at the start of each request 
+    health_check.run_first.priority: 255
+```
+
 ## Useful links
 - [FT health check formatter for viewing healthchecks in chrome ](https://github.com/Financial-Times/health-status-formatter)

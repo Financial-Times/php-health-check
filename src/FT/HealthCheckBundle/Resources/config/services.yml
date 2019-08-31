@@ -18,3 +18,5 @@ services:
         arguments:
             - '@monolog.logger'
             - '@service_container'
+        calls:
+            - [setCachePoolFromServiceId, ["@=container.hasParameter('health_check.cache_pool') ? parameter('health_check.cache_pool') : ''"]]

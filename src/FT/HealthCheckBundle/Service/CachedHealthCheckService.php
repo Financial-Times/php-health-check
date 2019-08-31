@@ -2,15 +2,19 @@
 
 namespace FT\HealthCheckBundle\Service;
 
+use Exception;
 use FT\HealthCheckBundle\HealthCheck\HealthCheck;
 use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
 use \Monolog\Logger;
 use \Stash\Pool;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-use RedisException;
+use Stash\Interfaces\PoolInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class CachedHealthCheckService
 {
+
+    const CACHE_POOL_SERVICE_PARAMETER_ID = "health_check.cache_pool";
 
     /**
      * Ez publish cache service.
@@ -18,6 +22,13 @@ class CachedHealthCheckService
      * @var Pool
      */
     protected $cache;
+    
+    /**
+     * Application container
+     * 
+     * @var Container
+     */
+    protected $container;
 
     /**
      * Logger service
@@ -33,12 +44,30 @@ class CachedHealthCheckService
     public function __construct(Logger $logger, Container $container)
     {
         $this->logger = $logger;
-
-        try{
+        $this->container = $container;
+        /*try{
             $this->cache = $container->get('ezpublish.cache_pool');
         } catch (Exception $e){
             $this->cache = null;
+        }*/
+    }
+
+    public function setCachePoolFromServiceId(string $serviceId){
+       
+        // In the event that the cache service has not been set default to keeping the cache service disabled
+        if($serviceId === "") return;
+
+        if(!$this->container->has($serviceId)){
+            throw new ServiceNotFoundException("Error expected value of " . self::CACHE_POOL_SERVICE_PARAMETER_ID . "to be an exsisting service. Service ID does not exsist.");
         }
+
+        $cacheService = $this->container->get($serviceId);
+        
+        if(!$cacheService instanceof PoolInterface){
+            throw new Exception("Expected cache service to implement Stash\Interfaces\PoolInterface. Instead class instance of" . get_class($cacheService));
+        }
+
+        $this->cache = $cacheService;
     }
 
     /**

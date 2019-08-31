@@ -1,0 +1,33 @@
+{
+    "name" : "ft/healthcheck-bundle",
+    "description" : "Symfony bundle for running FT healthchecks",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Ryan.Lee",
+        "email" : "rizza@rizza.net"
+    },{
+        "name": "Alex wilson"   
+    }],
+    "keywords" : [
+        "FT",
+        "Healthcheck",
+        "Symfony"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+        "symfony/config": "^2.8",
+        "sensio/framework-extra-bundle": "^3.0",
+        "symfony/dependency-injection": "^2.8",
+        "symfony/http-foundation": "^2.8",
+        "symfony/http-kernel": "^2.8",
+        "symfony/security": "^2.8",
+        "symfony/yaml": "^2.8",
+        "monolog/monolog": "^2.0",
+        "tedivm/stash": "^0.15.2"
+    },
+    "autoload" : {
+        "psr-4": { "FT\\": "src/" }
+    }
+}
