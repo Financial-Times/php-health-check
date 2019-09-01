@@ -24,7 +24,7 @@
         "symfony/http-kernel": "^2.8",
         "symfony/security": "^2.8",
         "symfony/yaml": "^2.8",
-        "monolog/monolog": "^2.0",
+        "monolog/monolog": "^2.0|^1.17",
         "tedivm/stash": "^0.15.2"
     },
     "autoload" : {
