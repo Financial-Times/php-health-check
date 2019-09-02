@@ -25,7 +25,7 @@
         "symfony/security": "^2.8",
         "symfony/yaml": "^2.8",
         "monolog/monolog": "^2.0|^1.17",
-        "tedivm/stash": "~0.6.1"
+        "tedivm/stash": "~0.6"
     },
     "autoload" : {
         "psr-4": { "FT\\": "src/" }
