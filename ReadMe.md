@@ -125,7 +125,7 @@ parameters:
     #The description of your product
     health_check.description: ''
 
-    #Add the service id for a already initialized Stash. This option needed to be set in order for health check caching to work. In the event that this is not set all healthchecks will be run every time the __health endpoint is called. (For eZ Publish/Platform use 'ezpublish.cache_pool')
+    #Add the service id for a already initialized PSR-6 Compatible cache pool. This option needed to be set in order for health check caching to work. In the event that this is not set all healthchecks will be run every time the __health endpoint is called. (For eZ Publish/Platform use 'ezpublish.cache_pool')
     health_check.cache_pool: ''
 
     # This option is used to force the __health endpoint to run before anything else. This is useful for when event listeners that run before requests rely on external services that are covered in other healthchecks. (For instance an auth service that runs before every request that could fail if the session service was down) 
