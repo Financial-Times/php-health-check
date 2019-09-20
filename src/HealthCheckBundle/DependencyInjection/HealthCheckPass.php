@@ -2,9 +2,11 @@
 
 namespace FT\HealthCheckBundle\DependencyInjection;
 
+use FT\HealthCheckBundle\EventListener\HealthCheckListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class HealthCheckPass implements CompilerPassInterface
 {
@@ -16,6 +18,11 @@ class HealthCheckPass implements CompilerPassInterface
         $healthCheckController = $container->getDefinition('health_check.controller');
         // Get health checks.
         $healthChecks = $container->findTaggedServiceIds('health_check');
+        
+        if(empty($healthChecks)){
+            return;
+        }
+
         $converterIdsByPriority = array();
         foreach ($healthChecks as $id => $tags) {
             foreach ($tags as $tag) {
@@ -28,6 +35,7 @@ class HealthCheckPass implements CompilerPassInterface
             $healthCheckController->addMethodCall('addHealthCheck', array(new Reference($referenceId)));
         }
     }
+    
     /**
      * Transforms a two-dimensional array of converters, indexed by priority,
      * into a flat array of Reference objects.

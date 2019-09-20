@@ -2,15 +2,17 @@
 
 namespace FT\HealthCheckBundle\Service;
 
+use Exception;
 use FT\HealthCheckBundle\HealthCheck\HealthCheck;
 use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
-use \Monolog\Logger;
-use \Stash\Pool;
+use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-use RedisException;
+use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class CachedHealthCheckService
 {
+    const CACHE_POOL_SERVICE_PARAMETER_ID = "health_check.cache_pool";
 
     /**
      * Ez publish cache service.
@@ -18,6 +20,13 @@ class CachedHealthCheckService
      * @var Pool
      */
     protected $cache;
+    
+    /**
+     * Application container
+     *
+     * @var Container
+     */
+    protected $container;
 
     /**
      * Logger service
@@ -33,12 +42,28 @@ class CachedHealthCheckService
     public function __construct(Logger $logger, Container $container)
     {
         $this->logger = $logger;
+        $this->container = $container;
+    }
 
-        try{
-            $this->cache = $container->get('ezpublish.cache_pool');
-        } catch (Exception $e){
-            $this->cache = null;
+    public function setCachePoolFromServiceId(string $serviceId)
+    {
+       
+        // In the event that the cache service has not been set default to keeping the cache service disabled
+        if ($serviceId === "") {
+            return;
         }
+
+        if (!$this->container->has($serviceId)) {
+            throw new ServiceNotFoundException("Error expected value of " . self::CACHE_POOL_SERVICE_PARAMETER_ID . "to be an exsisting service. Service ID does not exsist.");
+        }
+
+        $cacheService = $this->container->get($serviceId);
+        
+        if (!$cacheService instanceof CacheItemPoolInterface) {
+            throw new Exception("Expected cache service to be Compatible with PSR-6 CacheItemPoolInterface.");
+        }
+
+        $this->cache = $cacheService;
     }
 
     /**
@@ -59,14 +84,14 @@ class CachedHealthCheckService
         $cacheItem = $this->cache->getItem($cacheKey);
 
         //If this healthCheck is not cached
-        if ($cacheItem->isMiss()) {
+        if (!$cacheItem->isHit()) {
             //Run the health check
             $healthCheck = $healthCheckHandle->runHealthCheck();
 
             //In the event we only run it every so often
             if ($healthCheck->passed()) {
                 $cacheItem->set($healthCheck);
-                $cacheItem->setTTL($healthCheckHandle->getHealthCheckInterval());
+                $cacheItem->expiresAfter($healthCheckHandle->getHealthCheckInterval());
                 $cacheItem->save();
             }
         } else {
