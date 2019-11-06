@@ -34,9 +34,9 @@ class HealthCheckPass implements CompilerPassInterface
         foreach ($configurableHealthChecks as $id => $tags) {
             //Create and inject a decorated service definition each definition tagged with a configurable health check
             $container
-                ->register($id, FT\HealthCheckBundle\HealthCheck\ConfigurableHealthCheckHandler::class)
+                ->register($id.'.decorated', ConfigurableHealthCheckHandler::class)
                 ->addArgument(new Reference('service_container'))
-                ->addArgument(new Reference($id.".inner"))
+                ->addArgument(new Reference($id.".decorated.inner"))
                 ->addArgument($id)
                 ->setDecoratedService($id);
             

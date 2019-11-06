@@ -137,3 +137,15 @@ parameters:
 
 ## Useful links
 - [FT health check formatter for viewing healthchecks in chrome ](https://github.com/Financial-Times/health-status-formatter)
+
+## Configurable health checks
+Configurable health checks can be used in place of regular health checks. These healthchecks can be modified through parameter values loaded during a cache clear.
+To make a healthcheck configurable define the health check as you normally would but use the `health_check.configurable` tag instead.
+
+```yml
+services:
+    # Health Checks
+    app.placeholder.health_check:
+        class: YourBundle\HealthCheck\PlaceholderHealthCheck
+        tags: [{ name: health_check.configurable, priority: 20 }]
+```
