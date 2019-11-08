@@ -32,6 +32,12 @@ class HealthCheckPass implements CompilerPassInterface
         $converterIdsByPriority = [];
 
         foreach ($configurableHealthChecks as $id => $tags) {
+            if($container->hasParameter($id.'.run') && $container->getParameter($id.'.run') === false ){
+                //In the event a health check should not be run entirely remove it's service definition from the container and don't register it
+                $container->removeDefinition($id);
+                continue;
+            } 
+
             //Create and inject a decorated service definition each definition tagged with a configurable health check
             $container
                 ->register($id.'.decorated', ConfigurableHealthCheckHandler::class)
@@ -59,6 +65,12 @@ class HealthCheckPass implements CompilerPassInterface
                 $converterIdsByPriority[$priority][] = $id;
             }
         }
+
+        if(empty($converterIdsByPriority)){
+            //Abort in the case that we have no health checks
+            return;
+        }
+
         $converterIdsByPriority = $this->sortConverterIds($converterIdsByPriority);
         foreach ($converterIdsByPriority as $referenceId) {
             $healthCheckController->addMethodCall('addHealthCheck', array(new Reference($referenceId)));

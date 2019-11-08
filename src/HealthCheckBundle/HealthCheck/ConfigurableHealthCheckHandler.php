@@ -23,6 +23,11 @@ class ConfigurableHealthCheckHandler implements HealthCheckHandlerInterface
     protected $healthCheckHandle;
 
     /**
+     * @var Container
+     */
+    protected $container;
+
+    /**
      * @param Container $container
      * @param HealthCheckHandlerInterface $healthCheckHandle
      * @param string $serviceId
@@ -46,7 +51,7 @@ class ConfigurableHealthCheckHandler implements HealthCheckHandlerInterface
         //Override health check parts that can be overidden with there given props
         foreach (self::CONFIG_OVERRIDE_MAPPINGS as $parameterName => $methodName) {
             if ($this->hasParameter($parameterName)) {
-                $healthCheck->$methodName($this->getParameter($parameterName));
+                $healthCheck->{$methodName}($this->getParameter($parameterName));
             }
         }
 
@@ -89,11 +94,11 @@ class ConfigurableHealthCheckHandler implements HealthCheckHandlerInterface
      */
     protected function hasParameter(string $paramName): bool
     {
-        return $this->container->hasParameter("${$this->serviceId}.$parmName");
+        return $this->container->hasParameter($this->serviceId. '.' . $paramName);
     }
 
     protected function getParameter(string $paramName)
     {
-        return $this->container->getParameter("${$this->serviceId}.$parmName");
+        return $this->container->getParameter($this->serviceId . '.' . $paramName);
     }
 }
