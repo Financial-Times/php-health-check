@@ -97,7 +97,11 @@ class ConfigurableHealthCheckHandler implements HealthCheckHandlerInterface
         return $this->container->hasParameter($this->serviceId. '.' . $paramName);
     }
 
-    protected function getParameter(string $paramName)
+    /**
+     * @param string $paramName
+     * @return string
+     */
+    protected function getParameter(string $paramName): string
     {
         return $this->container->getParameter($this->serviceId . '.' . $paramName);
     }
