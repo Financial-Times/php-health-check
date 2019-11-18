@@ -149,3 +149,24 @@ services:
         class: YourBundle\HealthCheck\PlaceholderHealthCheck
         tags: [{ name: health_check.configurable, priority: 20 }]
 ```
+
+Configurable health checks can have various parts of themselves overridden by using parameters. Parameters are given in the form `${serviceId}.${config}`. 
+For instance:
+```yml
+parameters:
+    # Override the name of the healthcheck
+    app.placeholder.health_check.name: "A new name"
+    # Override the healthcheck severity 
+    app.placeholder.health_check.severity: 2
+``` 
+Would configure the `app.placeholder.health_check` to have a new name and priority.
+
+| Config attribute  | Description                                                                                                                                                    | Default (If applicable) |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+| priority          | The priority of the healthcheck (in the order in which they run)                                                                                               | N/A                     |
+| run               | If the health check should be run or not.  In the event false is given the service definition for the health check is removed and the health check is not run. | true                    |
+| name              | Gives the option to override the health check name (Equivalent to calling `withName` on health check).                                                         | N/A                     |
+| severity          | Gives the option to override the health check severity (Equivalent of calling `withSeverity` on health check).                                                 | N/A                     |
+| business_impact   | Gives the option to override the health check business impact entry (Equivalent of calling `withBusinessImpact` on health check).                              | N/A                     |
+| panic_guide       | Gives the option to override the health check panic guide (Equivalent of calling `withPanicGuide` on health check).                                            | N/A                     |
+| technical_summary | Gives the option to override the health check technical summary  (Equivalent of calling `withTechnicalSummary` on health check).                               | N/A                     |
