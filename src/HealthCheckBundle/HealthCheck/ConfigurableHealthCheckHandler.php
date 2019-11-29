@@ -28,6 +28,11 @@ class ConfigurableHealthCheckHandler implements HealthCheckHandlerInterface
     protected $container;
 
     /**
+     * @var string
+     */
+    private $serviceId;
+
+    /**
      * @param Container $container
      * @param HealthCheckHandlerInterface $healthCheckHandle
      * @param string $serviceId
