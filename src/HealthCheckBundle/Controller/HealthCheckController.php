@@ -66,7 +66,7 @@ class HealthCheckController extends Controller
                     ->withBusinessImpact("A healthcheck failed to run. It is unknown what effects this would have for users or the editorial team.")
                     ->withPanicGuide("Read the output of the check to find where the fatal error was thrown. Note that this healthcheck failing might be a symptom of a larger problem and more serious health check failures should be looked into first.")
                     ->withTechnicalSummary("This is a placeholder for the ". get_class($healthCheckHandle) ." heath check that failed to run successfully.")
-                    ->withCheckOutput(get_class($e).": {$e->getMessage()} in {$e->getFile()}:{$e->getLine()} ");
+                    ->withCheckOutputException($e);
             }
             return $healthCheck;
         }, $this->healthCheckHandles);

@@ -2,15 +2,16 @@
 
 namespace FT\HealthCheckBundle\HealthCheck;
 
-use \DateTime;
+use DateTime;
+use Exception;
 
 /**
  * This class represents the data that makes up a single FT health check.
  */
 class HealthCheck
-{   
+{
     /**
-     * Internal container for health check data 
+     * Internal container for health check data.
      *
      * @var array
      */
@@ -22,7 +23,7 @@ class HealthCheck
         $this->check = [
             'lastUpdated' => new DateTime(),
             'checkOutput' => '',
-            'panicGuide' => ''
+            'panicGuide' => '',
         ];
     }
 
@@ -32,33 +33,36 @@ class HealthCheck
      * @param string $id
      * @return HealthCheck
      */
-    public function withId(string $id): HealthCheck
+    public function withId(string $id): self
     {
         $this->check['id'] = $id;
+
         return $this;
     }
 
     /**
-     * Human readable name for the health check (Must be unique)
+     * Human readable name for the health check (Must be unique).
      *
      * @param string $name
      * @return HealthCheck
      */
-    public function withName(string $name): HealthCheck
+    public function withName(string $name): self
     {
         $this->check['name'] = $name;
+
         return $this;
     }
 
     /**
      * Whether the check is currently passing.
      *
-     * @param boolean $ok
+     * @param bool $ok
      * @return HealthCheck
      */
-    public function withOk(bool $ok): HealthCheck
+    public function withOk(bool $ok): self
     {
         $this->check['ok'] = $ok;
+
         return $this;
     }
 
@@ -67,12 +71,13 @@ class HealthCheck
      *  - 1 (high): Critical Issue with serious impact to the editorial team or user (e.g database is down).
      *  - 2 (Medium): Serious issue that can be tolerated for a short duration of time. This can involve lowed redundancy or minimal user impact.
      *  - 3 (low): Minor fault. No end user impact and no major risk caused by this alert.
-     * @param integer $severity
+     * @param int $severity
      * @return HealthCheck
      */
-    public function withSeverity(int $severity): HealthCheck
+    public function withSeverity(int $severity): self
     {
         $this->check['severity'] = $severity;
+
         return $this;
     }
 
@@ -85,9 +90,10 @@ class HealthCheck
      * @param string $businessImpact
      * @return HealthCheck
      */
-    public function withBusinessImpact(string $businessImpact): HealthCheck
+    public function withBusinessImpact(string $businessImpact): self
     {
         $this->check['businessImpact'] = $businessImpact;
+
         return $this;
     }
 
@@ -98,9 +104,10 @@ class HealthCheck
      * @param string $technicalSummary
      * @return HealthCheck
      */
-    public function withTechnicalSummary(string $technicalSummary): HealthCheck
+    public function withTechnicalSummary(string $technicalSummary): self
     {
         $this->check['technicalSummary'] = $technicalSummary;
+
         return $this;
     }
 
@@ -110,9 +117,10 @@ class HealthCheck
      * @param string $panicGuide
      * @return HealthCheck
      */
-    public function withPanicGuide(string $panicGuide): HealthCheck
+    public function withPanicGuide(string $panicGuide): self
     {
         $this->check['panicGuide'] = $panicGuide;
+
         return $this;
     }
 
@@ -122,35 +130,51 @@ class HealthCheck
      * @param string $checkOutput
      * @return HealthCheck
      */
-    public function withCheckOutput(string $checkOutput): HealthCheck
+    public function withCheckOutput($checkOutput): self
     {
         $this->check['checkOutput'] = $checkOutput;
+
         return $this;
     }
 
     /**
-     * The time and date at which the check was last assessed. (Defaults to the time that a test was created)
+     * Formats an exception to an output for the healthcheck. Note that this overrides any output given in {@see self::withCheckOutput()}
+     * 
+     * @param Exception $exception
+     * @return HealthCheck
+     */
+    public function withCheckOutputException(Exception $exception): self
+    {
+        $this->check['checkOutput'] = 'Exception thrown: '. \get_class($exception);
+
+        return $this;
+    }
+
+    /**
+     * The time and date at which the check was last assessed. (Defaults to the time that a test was created).
      *
      * @param DateTime $panicGuide
      * @return HealthCheck
      */
-    public function withLastUpdated(DateTime $lastUpdated): HealthCheck
+    public function withLastUpdated(DateTime $lastUpdated): self
     {
         $this->check['lastUpdated'] = $lastUpdated;
+
         return $this;
     }
 
     /**
-     * Gets if the health check passed or not
+     * Gets if the health check passed or not.
      *
      * @return bool
      */
-    public function passed() : bool{
+    public function passed(): bool
+    {
         return $this->check['ok'];
     }
 
     /**
-     * Returns an associative array containing all the relevant data surrounding the health check
+     * Returns an associative array containing all the relevant data surrounding the health check.
      *
      * @return array
      */
@@ -158,7 +182,7 @@ class HealthCheck
     {
         $check = $this->check;
 
-        if($check['lastUpdated'] instanceof DateTime){
+        if ($check['lastUpdated'] instanceof DateTime) {
             $check['lastUpdated'] = $check['lastUpdated']->format(DateTime::ATOM);
         }
 

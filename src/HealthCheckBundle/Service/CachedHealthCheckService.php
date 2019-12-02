@@ -79,23 +79,28 @@ class CachedHealthCheckService
             return $healthCheckHandle->runHealthCheck();
         }
 
-        $cacheKey = $healthCheckHandle->getHealthCheckId();
+        try {
+            $cacheKey = $healthCheckHandle->getHealthCheckId();
 
-        $cacheItem = $this->cache->getItem($cacheKey);
+            $cacheItem = $this->cache->getItem($cacheKey);
 
-        //If this healthCheck is not cached
-        if (!$cacheItem->isHit()) {
-            //Run the health check
-            $healthCheck = $healthCheckHandle->runHealthCheck();
+            //If this healthCheck is not cached
+            if (!$cacheItem->isHit()) {
+                //Run the health check
+                $healthCheck = $healthCheckHandle->runHealthCheck();
 
-            //In the event we only run it every so often
-            if ($healthCheck->passed()) {
-                $cacheItem->set($healthCheck);
-                $cacheItem->expiresAfter($healthCheckHandle->getHealthCheckInterval());
-                $cacheItem->save();
+                //In the event we only run it every so often
+                if ($healthCheck->passed()) {
+                    $cacheItem->set($healthCheck);
+                    $cacheItem->expiresAfter($healthCheckHandle->getHealthCheckInterval());
+                    $cacheItem->save();
+                }
+            } else {
+                $healthCheck = $cacheItem->get();
             }
-        } else {
-            $healthCheck = $cacheItem->get();
+        } catch (Exception $e){
+            //In the event of an error fall back to running the health check again if possible
+            return $healthCheckHandle->runHealthCheck();
         }
 
         return $healthCheck;
