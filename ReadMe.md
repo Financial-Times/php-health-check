@@ -1,6 +1,8 @@
 # Health checks
 Health checks can be found under the `__health` endpoint. Each health check tests a part of the site continually, and in doing so indicates the overall health of the site.
 
+Singular health checks can be run by using their id found at `/__health/{HealthCheckId}`.
+
 Health checks in this package conform to the FT Health Check Standard.
 
 ## Installation

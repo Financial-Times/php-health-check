@@ -13,10 +13,11 @@ class HealthCheckPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('health_check.controller')) {
+        if (!$container->hasDefinition('health_check.registry')) {
             return;
         }
-        $healthCheckController = $container->getDefinition('health_check.controller');
+
+        $healthCheckRegister = $container->getDefinition('health_check.registry');
 
         // Get health checks.
         $healthChecks = $container->findTaggedServiceIds('health_check');
@@ -72,8 +73,10 @@ class HealthCheckPass implements CompilerPassInterface
         }
 
         $converterIdsByPriority = $this->sortConverterIds($converterIdsByPriority);
+
+        //Register new health checks
         foreach ($converterIdsByPriority as $referenceId) {
-            $healthCheckController->addMethodCall('addHealthCheck', array(new Reference($referenceId)));
+            $healthCheckRegister->addMethodCall('registerHealthCheck', array(new Reference($referenceId)));
         }
     }
     

@@ -92,7 +92,7 @@ class CachedHealthCheckService
                 //In the event we only run it every so often
                 if ($healthCheck->passed()) {
                     $cacheItem->set($healthCheck);
-                    $cacheItem->expiresAfter($healthCheckHandle->getHealthCheckInterval());
+                    $cacheItem->expiresAfter(time() + $healthCheckHandle->getHealthCheckInterval());
                     $cacheItem->save();
                 }
             } else {

@@ -3,3 +3,8 @@ healthCheck:
     path: /__health
     defaults:
         _controller: health_check.controller:healthCheckAction
+
+healthCheckId:
+    path: /__health/{healthCheckId}
+    defaults:
+        _controller: health_check.controller:healthCheckByIdAction
