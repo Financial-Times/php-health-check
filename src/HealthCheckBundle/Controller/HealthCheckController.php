@@ -54,30 +54,4 @@ class HealthCheckController extends Controller
             )
         );
     }
-
-    /**
-     * Execute Health check by id
-     * @param string $healthCheckId
-     */
-    public function healthCheckByIdAction($healthCheckId)
-    {
-        $healthCheckHandler = $this->healthCheckRegistry->getHealthCheckById($healthCheckId);
-
-        //Fail id we cannot find the healthcheck
-        if(is_null($healthCheckHandler)){
-            return new JsonResponse(
-                [
-                    'code' => 404,
-                    'message' => 'No health check registered with that id'
-                ],
-                404
-            );
-        }
-
-        return $this->healthCheckResponseFactory->getHealthCheckResponse(
-            [$this->healthCheckExecutorService->run(
-                $healthCheckHandler
-            )]
-        );
-    }
 }
