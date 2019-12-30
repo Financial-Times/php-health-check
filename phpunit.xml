@@ -16,11 +16,10 @@
 
     <testsuites>
         <testsuite name="Health Check Bundle Test Suite">
-            <directory>./tests/</directory>
+            <directory>./tests/*</directory>
         </testsuite>
     </testsuites>
-
-
+    
     <php>
         <ini name="error_reporting" value="-1" />
         <ini name="display_errors" value="1" />

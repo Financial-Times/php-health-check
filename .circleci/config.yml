@@ -1,0 +1,35 @@
+version: 2.0
+jobs:
+  run-tests:
+    docker:
+      - image: circleci/php:7.4.1-cli
+    steps:
+      - checkout
+      - run:
+          name: Install Composer
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
+            sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+            php -r "unlink('composer-setup.php');"
+      - restore_cache:
+          keys:
+            - composer-cache-{{ checksum "composer.json" }}
+      - run:
+          name: Run composer install
+          command: composer install --ignore-platform-reqs --no-scripts
+      - save_cache:
+          key: composer-cache-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - bin
+      - run:
+          name: Run tests
+          command: bin/phpunit
+      
+workflows:
+  version: 2
+  run-unit-tests:
+    jobs:
+      - run-tests
+    
