@@ -1,4 +1,5 @@
 # Health checks
+
 Health checks can be found under the `__health` endpoint. Each health check tests a part of the site continually, and in doing so indicates the overall health of the site.
 
 Singular health checks can be run by using their id found at `/__health/{HealthCheckId}`.
@@ -172,3 +173,4 @@ Would configure the `app.placeholder.health_check` to have a new name and priori
 | business_impact   | Gives the option to override the health check business impact entry (Equivalent of calling `withBusinessImpact` on health check).                              | N/A                     |
 | panic_guide       | Gives the option to override the health check panic guide (Equivalent of calling `withPanicGuide` on health check).                                            | N/A                     |
 | technical_summary | Gives the option to override the health check technical summary  (Equivalent of calling `withTechnicalSummary` on health check).                               | N/A                     |
+Unit tests: [![CircleCI](https://circleci.com/gh/Financial-Times/php-health-check.svg?style=svg)](https://circleci.com/gh/Financial-Times/php-health-check)
