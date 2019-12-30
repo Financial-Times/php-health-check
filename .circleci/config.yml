@@ -17,7 +17,7 @@ jobs:
             - composer-cache-{{ checksum "composer.json" }}
       - run:
           name: Run composer install
-          command: composer install --ignore-platform-reqs --no-scripts
+          command: composer install --ignore-platform-reqs --no-scripts --no-progress --no-interaction
       - save_cache:
           key: composer-cache-{{ checksum "composer.json" }}
           paths:
@@ -25,7 +25,7 @@ jobs:
             - bin
       - run:
           name: Run tests
-          command: bin/phpunit
+          command: php ./bin/phpunit
       
 workflows:
   version: 2
