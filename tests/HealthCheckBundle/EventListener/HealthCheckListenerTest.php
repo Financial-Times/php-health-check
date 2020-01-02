@@ -122,4 +122,8 @@ class HealthCheckListenerTest extends TestCase{
         $this->assertNull($healthCheckListener->onRequest($getResponseEvent));
     
     }
+    
+    protected function runHealthCheck() : void {
+        Mockery::close();
+    }
 }
