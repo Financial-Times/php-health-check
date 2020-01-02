@@ -37,7 +37,7 @@ class HealthCheckRegistry {
      * @param HealthCheckHandlerInterface $healthCheck
      * @return void
      */
-    public function registerHealthCheck(HealthCheckHandlerInterface $healthCheck):void{
+    public function registerHealthCheck(HealthCheckHandlerInterface $healthCheck) : void{
         $healthCheckId = $healthCheck->getHealthCheckId();
 
         if(array_key_exists($healthCheckId, $this->healthCheckIdToRunOrderMap)){
@@ -50,7 +50,7 @@ class HealthCheckRegistry {
         $this->registeredHealthChecks[] = $healthCheck;
 
         //Index the health check using an in memory look up table so we can quickly query by healthcheck Id 
-        $this->healthCheckIdToRunOrderMap[$healthCheck->getHealthCheckId()] = count($this->registeredHealthChecks) -1;
+        $this->healthCheckIdToRunOrderMap[$healthCheck->getHealthCheckId()] = count($this->registeredHealthChecks) - 1;
     }
 
     /**

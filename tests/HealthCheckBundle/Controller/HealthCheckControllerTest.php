@@ -5,13 +5,13 @@ namespace FT\Tests\HealthCheckBundle\Controller;
 use Mockery;
 use HealthCheckBundle;
 use PHPUnit\Framework\TestCase;
-use FT\Tests\Utils\HealthCheckHandler;
 use Symfony\Component\HttpFoundation\Response;
 use FT\HealthCheckBundle\HealthCheck\HealthCheck;
 use FT\HealthCheckBundle\HealthCheck\HealthCheckRegistry;
 use FT\HealthCheckBundle\Controller\HealthCheckController;
 use FT\HealthCheckBundle\Factory\HealthCheckResponseFactory;
 use FT\HealthCheckBundle\Service\HealthCheckExecutorService;
+use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
 
 /**
  * @coversDefaultClass \FT\HealthCheckBundle\Controller\HealthCheckController
@@ -37,8 +37,8 @@ class HealthCheckControllerTest extends TestCase {
         ];
 
         $healthCheckHandlersToExecute = [
-            new HealthCheckHandler(),
-            new HealthCheckHandler()
+            Mockery::mock(HealthCheckHandlerInterface::class),
+            Mockery::mock(HealthCheckHandlerInterface::class)
         ];
 
         $this->healthCheckRegistry

@@ -3,7 +3,6 @@
 namespace FT\Tests\HealthCheckBundle\Controller;
 
 use Mockery;
-
 use PHPUnit\Framework\TestCase;
 use FT\Tests\Utils\HealthCheckHandler;
 use FT\HealthCheckBundle\HealthCheck\HealthCheck;
@@ -364,7 +363,7 @@ class ConfigurableHealthCheckHandlerTest extends TestCase
              // Handle the call to hasParameter where we actually expect to get a value
              ->shouldReceive('hasParameter')
              ->with(Mockery::on(function ($arg) use ($nameParameterPath, $severityParameterPath, $panicGuideParameterPath) {
-                return in_array($arg, [$nameParameterPath, $severityParameterPath, $panicGuideParameterPath], true);
+                 return in_array($arg, [$nameParameterPath, $severityParameterPath, $panicGuideParameterPath], true);
              }))
              ->andReturn(true)
              // Handle the call where we actually get the parameter for name
@@ -395,7 +394,8 @@ class ConfigurableHealthCheckHandlerTest extends TestCase
      * @covers ::hasParameter
      * @covers ::getParameter
      */
-    public function test_getHealthCheckId_canOverrideHealthCheckId(){
+    public function test_getHealthCheckId_canOverrideHealthCheckId()
+    {
         $idParameterPath = 'health_check.thing.id';
         $idParameterValue = 'MyThingHealthCheck';
 
@@ -436,7 +436,8 @@ class ConfigurableHealthCheckHandlerTest extends TestCase
      * @covers ::hasParameter
      * @covers ::getParameter
      */
-    public function test_getHealthCheckId_canUseDefaultHealthCheckId(){
+    public function test_getHealthCheckId_canUseDefaultHealthCheckId()
+    {
         $idParameterValue = 'MyThingHealthCheck';
 
         $this->healthCheckHandle
@@ -471,7 +472,8 @@ class ConfigurableHealthCheckHandlerTest extends TestCase
      * @covers ::hasParameter
      * @covers ::getParameter
      */
-     public function test_getHealthCheckId_canOverrideHealthCheckInterval(){
+    public function test_getHealthCheckId_canOverrideHealthCheckInterval()
+    {
         $intervalParameterPath = 'health_check.thing.interval';
         $intervalParameterValue = 100;
 
@@ -512,7 +514,8 @@ class ConfigurableHealthCheckHandlerTest extends TestCase
      * @covers ::hasParameter
      * @covers ::getParameter
      */
-    public function test_getHealthCheckId_canUseDefaultHealthCheckInterval(){
+    public function test_getHealthCheckId_canUseDefaultHealthCheckInterval()
+    {
         $intervalParameterValue = 100;
 
         $this->healthCheckHandle
