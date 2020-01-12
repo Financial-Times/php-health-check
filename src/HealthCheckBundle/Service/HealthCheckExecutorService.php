@@ -50,6 +50,8 @@ class HealthCheckExecutorService
      */
     public function runAll(array $healthCheckHandles) : array
     {
-        return array_map([$this, 'run'], $healthCheckHandles);
+        $result = array_map([$this, 'run'], $healthCheckHandles);
+        $this->cachedHealthCheckService->commit();
+        return $result;
     }
 }

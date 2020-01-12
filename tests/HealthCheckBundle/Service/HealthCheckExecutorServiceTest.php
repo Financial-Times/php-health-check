@@ -92,7 +92,12 @@ class HealthCheckExecutorServiceTest extends TestCase
         $healthCheckHandle2 = Mockery::mock(HealthCheckHandlerInterface::class);
         $healthCheckHandle3 = Mockery::mock(HealthCheckHandlerInterface::class);
 
-        $healthCheckExecutorService = Mockery::mock(HealthCheckExecutorService::class)->makePartial();
+        $this->cachedHealthCheckService
+            //Handle committing deferred health checks
+            ->shouldReceive('commit')
+            ->getMock();
+
+        $healthCheckExecutorService = Mockery::mock(HealthCheckExecutorService::class, [$this->cachedHealthCheckService])->makePartial();
 
         $healthCheckExecutorService
             // Handle 1st call

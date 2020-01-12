@@ -138,14 +138,14 @@ class HealthCheck
     }
 
     /**
-     * Formats an exception to an output for the healthcheck. Note that this overrides any output given in {@see self::withCheckOutput()}
-     * 
+     * Formats an exception to an output for the healthcheck. Note that this overrides any output given in {@see self::withCheckOutput()}.
+     *
      * @param Exception $exception
      * @return HealthCheck
      */
     public function withCheckOutputException(Exception $exception): self
     {
-        $this->check['checkOutput'] = 'Exception thrown: '. \get_class($exception);
+        $this->check['checkOutput'] = 'Exception thrown: ' . \get_class($exception);
 
         return $this;
     }
@@ -171,6 +171,16 @@ class HealthCheck
     public function passed(): bool
     {
         return $this->check['ok'];
+    }
+
+    /**
+     * Returns the time this health check was executed.
+     *
+     * @return DateTime
+     */
+    public function getLastUpdated(): DateTime
+    {
+        return $this->check['lastUpdated'];
     }
 
     /**
