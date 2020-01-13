@@ -33,18 +33,20 @@ class HealthCheckExecutorServiceTest extends TestCase
 
         $healthCheckHandle = Mockery::mock(HealthCheckHandlerInterface::class);
 
+        $e = new Exception('Oh no something bad happened that was uncaught in the healthcheck!');
+
         $healthCheckFactory = Mockery::mock('overload:FT\HealthCheckBundle\Factory\HealthCheckFactory');
         $healthCheckFactory
             //Handle internal call to build a healthcheck with the correct state
             ->shouldReceive('buildHealthCheckFromFailingHealthCheckHandle')
-            ->with($healthCheckHandle)
+            ->withArgs([$healthCheckHandle, $e])
             ->andReturn($failingHealthCheck)
             ->getMock();
            
         $this->cachedHealthCheckService
             ->shouldReceive('runHealthCheckHandle')
             ->with($healthCheckHandle)
-            ->andThrow(Exception::class, 'Oh no something bad happened that was uncaught in the healthcheck!')
+            ->andThrow($e)
             ->getMock();
         
         $healthCheckExecutor = new HealthCheckExecutorService($this->cachedHealthCheckService);

@@ -38,7 +38,7 @@ class HealthCheckExecutorService
         try {
             return $this->cachedHealthCheckService->runHealthCheckHandle($healthCheckHandle);
         } catch (Exception $e) {
-           return HealthCheckFactory::buildHealthCheckFromFailingHealthCheckHandle($healthCheckHandle);
+           return HealthCheckFactory::buildHealthCheckFromFailingHealthCheckHandle($healthCheckHandle, $e);
         }
     }
 

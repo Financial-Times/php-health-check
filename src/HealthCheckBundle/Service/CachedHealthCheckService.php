@@ -60,9 +60,16 @@ class CachedHealthCheckService
         $this->healthChecksToPurge = [];
     }
 
+    /**
+     * Sets the cache pool id from the service ID
+     *
+     * @throws Exception
+     * @throws ServiceNotFoundException
+     * @param string $serviceId
+     * @return void
+     */
     public function setCachePoolFromServiceId(string $serviceId)
     {
-       
         // In the event that the cache service has not been set default to keeping the cache service disabled
         if ($serviceId === "") {
             return;
@@ -157,7 +164,7 @@ class CachedHealthCheckService
     }
 
     /**
-     * 
+     * Queues a health check to be internally stored
      *
      * @param HealthCheck $healthcheck
      * @param integer|null $ttl
@@ -194,7 +201,7 @@ class CachedHealthCheckService
     }
 
     /**
-     * Generates
+     * Generates a namespaced cache key for a health check
      *
      * @param HealthCheckHandlerInterface $healthCheckHandle
      * @return string
