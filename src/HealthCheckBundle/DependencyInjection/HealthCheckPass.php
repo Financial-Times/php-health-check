@@ -74,7 +74,7 @@ class HealthCheckPass implements CompilerPassInterface
 
         $converterIdsByPriority = $this->sortConverterIds($converterIdsByPriority);
 
-        //Register new health checks
+        // Register new health checks
         foreach ($converterIdsByPriority as $referenceId) {
             $healthCheckRegister->addMethodCall('registerHealthCheck', array(new Reference($referenceId)));
         }
