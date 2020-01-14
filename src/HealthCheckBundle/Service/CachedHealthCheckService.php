@@ -3,11 +3,12 @@
 namespace FT\HealthCheckBundle\Service;
 
 use Exception;
+use Monolog\Logger;
+use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use FT\HealthCheckBundle\HealthCheck\HealthCheck;
 use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
-use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class CachedHealthCheckService
@@ -170,9 +171,9 @@ class CachedHealthCheckService
      * @param integer|null $ttl
      * @return void
      */
-    protected function queueHealthCheckToBeStored($cacheItem, HealthCheck $healthCheck, ?int $ttl){
-        //Store health check in the event we have a ttl and a passing health check
-        if (!is_null($ttl) && $healthCheck->passed()) {
+    protected function queueHealthCheckToBeStored(CacheItemInterface $cacheItem, HealthCheck $healthCheck, ?int $ttl) : void {
+        //Store health check in the event we have a valid ttl and a passing health check
+        if (!is_null($ttl) && $ttl > 0 && $healthCheck->passed()) {
             $cacheItem->set($healthCheck);
 
             // Store against minimum ttl

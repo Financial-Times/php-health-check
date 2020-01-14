@@ -38,7 +38,7 @@ class HealthCheckExecutorServiceTest extends TestCase
         $healthCheckFactory = Mockery::mock('overload:FT\HealthCheckBundle\Factory\HealthCheckFactory');
         $healthCheckFactory
             //Handle internal call to build a healthcheck with the correct state
-            ->shouldReceive('buildHealthCheckFromFailingHealthCheckHandle')
+            ->shouldReceive('buildFailingHealthCheck')
             ->withArgs([$healthCheckHandle, $e])
             ->andReturn($failingHealthCheck)
             ->getMock();

@@ -17,7 +17,16 @@ use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
  * @coversDefaultClass \FT\HealthCheckBundle\Controller\HealthCheckController
  */
 class HealthCheckControllerTest extends TestCase {
-    function setUp() : void{
+    /** @var Mockery */
+    protected $healthCheckResponseFactory;
+
+    /** @var Mockery */
+    protected $healthCheckRegistry;
+
+    /** @var Mockery */
+    protected $healthCheckExecutor;
+    
+    function setUp(): void{
         $this->healthCheckResponseFactory = Mockery::mock(HealthCheckResponseFactory::class);
         $this->healthCheckRegistry = Mockery::mock(HealthCheckRegistry::class);
         $this->healthCheckExecutor =  Mockery::mock(HealthCheckExecutorService::class);

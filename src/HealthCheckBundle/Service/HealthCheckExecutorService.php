@@ -14,9 +14,7 @@ use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
 class HealthCheckExecutorService
 {
 
-    /**
-     * @var CachedHealthCheckService
-     */
+    /** @var CachedHealthCheckService */
     protected $cachedHealthCheckService;
 
     /**
@@ -33,12 +31,12 @@ class HealthCheckExecutorService
      * @param HealthCheckHandlerInterface $healthCheckHandle
      * @return HealthCheck
      */
-    public function run(HealthCheckHandlerInterface $healthCheckHandle) : HealthCheck
+    public function run(HealthCheckHandlerInterface $healthCheckHandle): HealthCheck
     {
         try {
             return $this->cachedHealthCheckService->runHealthCheckHandle($healthCheckHandle);
         } catch (Exception $e) {
-           return HealthCheckFactory::buildHealthCheckFromFailingHealthCheckHandle($healthCheckHandle, $e);
+           return HealthCheckFactory::buildFailingHealthCheck($healthCheckHandle, $e);
         }
     }
 

@@ -9,7 +9,7 @@ use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
 /**
  * Holds a collection of methods to aid in building health check objects 
  */
-class HealthCheckFactory{
+class HealthCheckFactory {
     /**
      * Creates a place holder health check for health check handlers that failed for reasons unknown to the health check handler
      *
@@ -17,7 +17,7 @@ class HealthCheckFactory{
      * @param Exception $e
      * @return HealthCheck
      */
-    static public function buildHealthCheckFromFailingHealthCheckHandle(HealthCheckHandlerInterface $healthCheckHandle, Exception $exception) : HealthCheck {
+    static public function buildFailingHealthCheck(HealthCheckHandlerInterface $healthCheckHandle, Exception $exception) : HealthCheck {
         $healthCheck = new HealthCheck();
         $healthCheck = $healthCheck
             ->withId($healthCheckHandle->getHealthCheckId())
