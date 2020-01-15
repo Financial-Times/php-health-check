@@ -21,7 +21,8 @@ class HealthCheckListenerTest extends TestCase
      */
     protected $healthCheckController;
 
-    protected function setUp(): void{
+    protected function setUp(): void
+    {
         $this->healthCheckController = Mockery::mock(HealthCheckController::class);
     }
 
@@ -31,10 +32,11 @@ class HealthCheckListenerTest extends TestCase
      * @covers ::__construct
      * @covers ::onRequest
      */
-    public function test_onRequest_onlyAppliesToTheMasterRequest(){
+    public function test_onRequest_onlyAppliesToTheMasterRequest()
+    {
         $getResponseEvent = Mockery::mock(GetResponseEvent::class);
         $getResponseEvent
-        //Handle request for if event is master company
+        // Handle request for if event is master company
             ->shouldReceive('isMasterRequest')
             ->andReturn(false)
             ->getMock();
@@ -50,7 +52,7 @@ class HealthCheckListenerTest extends TestCase
      * @covers ::__construct
      * @covers ::onRequest
      */
-    public function test_onRequest_pathsShouldNotMatch(){
+    public function test_onRequest_pathsShouldNotMatch() {
         $pathsThatShouldNotMatch = [
             '/some/long/path',
             '/aSinglePartPath',
@@ -71,7 +73,7 @@ class HealthCheckListenerTest extends TestCase
 
             $getResponseEvent = Mockery::mock(GetResponseEvent::class);
             $getResponseEvent
-                //Handle request for if event is master company
+                // Handle request for if event is master company
                 ->shouldReceive('isMasterRequest')
                 ->andReturn(true)
                 // Get the current request
