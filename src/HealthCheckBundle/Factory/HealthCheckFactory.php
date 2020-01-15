@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace FT\HealthCheckBundle\Factory;
 
@@ -17,7 +18,10 @@ class HealthCheckFactory {
      * @param Exception $e
      * @return HealthCheck
      */
-    static public function buildFailingHealthCheck(HealthCheckHandlerInterface $healthCheckHandle, Exception $exception) : HealthCheck {
+    static public function buildFailingHealthCheck(
+        HealthCheckHandlerInterface $healthCheckHandle, 
+        Exception $exception
+    ): HealthCheck {
         $healthCheck = new HealthCheck();
         $healthCheck = $healthCheck
             ->withId($healthCheckHandle->getHealthCheckId())
@@ -28,6 +32,7 @@ class HealthCheckFactory {
             ->withPanicGuide("Read the output of the check to find where the fatal error was thrown. Note that this healthcheck failing might be a symptom of a larger problem and more serious health check failures should be looked into first.")
             ->withTechnicalSummary("This is a placeholder for the ". get_class($healthCheckHandle) ." heath check that failed to run successfully.")
             ->withCheckOutputException($exception);
+        
         return $healthCheck;
     }
 }
