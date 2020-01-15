@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace FT\HealthCheckBundle\Service;
 
@@ -18,7 +19,8 @@ class CachedHealthCheckService
     const CACHE_POOL_PREFIX = 'health_check.cache.executed.';
 
     /**
-     * Gives the minimum ttl for cache pools so that unexpected cache misses do not happen when using the psr-6 compliant cache pool
+     * Gives the minimum ttl for cache pools so that unexpected cache 
+     * misses do not happen when using the psr-6 compliant cache pool
      */
     const CACHE_INTERVAL_MINIMUM_TTL = 120;
 
@@ -69,7 +71,7 @@ class CachedHealthCheckService
      * @param string $serviceId
      * @return void
      */
-    public function setCachePoolFromServiceId(string $serviceId)
+    public function setCachePoolFromServiceId(string $serviceId): void
     {
         // In the event that the cache service has not been set default to keeping the cache service disabled
         if ($serviceId === "") {
@@ -95,25 +97,25 @@ class CachedHealthCheckService
      * @param HealthCheckHandlerInterface $healthCheckHandle
      * @return HealthCheck
      */
-    public function runHealthCheckHandle(HealthCheckHandlerInterface $healthCheckHandle)
+    public function runHealthCheckHandle(HealthCheckHandlerInterface $healthCheckHandle): HealthCheck
     {
-        //If we don't cache the health check or the cache is not available just run the check.
+        // If we don't cache the health check or the cache is not available just run the check.
         if (is_null($healthCheckHandle->getHealthCheckInterval()) || is_null($this->cache)) {
             return $healthCheckHandle->runHealthCheck();
         }
 
         try {
-            //Try to get the health check from cache
+            // Try to get the health check from cache
             $cacheItem = $this->getHealthCheckFromCache($healthCheckHandle);
 
             $healthCheck = $cacheItem->get();
 
             $healthCheckInterval = $healthCheckHandle->getHealthCheckInterval();
 
-            //If this healthCheck is not cached
+            // If this healthCheck is not cached
             if ($this->healthCheckExpired($healthCheck, $healthCheckInterval)) {
 
-                //Run the health check
+                // Run the health check
                 $healthCheck = $healthCheckHandle->runHealthCheck();
 
                 // Make sure that the healthcheck will be properly cleaned out before we finish execution
@@ -124,7 +126,7 @@ class CachedHealthCheckService
                 
             }
         } catch (Exception $e){
-            //In the event of an error fall back to running the health check again if possible
+            // In the event of an error fall back to running the health check again if possible
             return $healthCheckHandle->runHealthCheck();
         }
 
@@ -138,7 +140,8 @@ class CachedHealthCheckService
      * @param integer $ttl
      * @return bool
      */
-    protected function healthCheckExpired(?HealthCheck $healthCheck, int $ttl) : bool{
+    protected function healthCheckExpired(?HealthCheck $healthCheck, int $ttl): bool
+    {
         return is_null($healthCheck) || $healthCheck->getLastUpdated()->getTimestamp() + $ttl > time();
     }
 
@@ -148,7 +151,8 @@ class CachedHealthCheckService
      * @param HealthCheckHandlerInterface|null $healthCheckHandle
      * @return void
      */
-    protected function queueHealthCheckToBePurged(?HealthCheckHandlerInterface $healthCheckHandle) : void {
+    protected function queueHealthCheckToBePurged(?HealthCheckHandlerInterface $healthCheckHandle): void 
+    {
         $this->healthChecksToPurge[] = $this->getCacheKeyFromHealthCheckHandle($healthCheckHandle);
     }
 
@@ -158,7 +162,8 @@ class CachedHealthCheckService
      * @param HealthCheckHandlerInterface $healthCheckHandle
      * @return HealthCheck|null
      */
-    protected function getHealthCheckFromCache(HealthCheckHandlerInterface $healthCheckHandle) {
+    protected function getHealthCheckFromCache(HealthCheckHandlerInterface $healthCheckHandle): ?HealthCheck
+    {
         return  $this->cache->getItem(
             $this->getCacheKeyFromHealthCheckHandle($healthCheckHandle)
         );
@@ -171,8 +176,12 @@ class CachedHealthCheckService
      * @param integer|null $ttl
      * @return void
      */
-    protected function queueHealthCheckToBeStored(CacheItemInterface $cacheItem, HealthCheck $healthCheck, ?int $ttl) : void {
-        //Store health check in the event we have a valid ttl and a passing health check
+    protected function queueHealthCheckToBeStored(
+        CacheItemInterface $cacheItem, 
+        HealthCheck $healthCheck, 
+        ?int $ttl
+    ): void {
+        // Store health check in the event we have a valid ttl and a passing health check
         if (!is_null($ttl) && $ttl > 0 && $healthCheck->passed()) {
             $cacheItem->set($healthCheck);
 
@@ -187,17 +196,18 @@ class CachedHealthCheckService
      *
      * @return void
      */
-    public function commit() : void {
+    public function commit(): void 
+    {
         if(is_null($this->cache)){
-            //In the event we do not have a cache pool do nothing
+            // In the event we do not have a cache pool do nothing
             return;
         }
 
-        //Clean out all of the health checks we are looking for
+        // Clean out all of the health checks we are looking for
         $this->cache->deleteItems($this->healthChecksToPurge);
         $this->healthChecksToPurge = [];
 
-        //Store the remaining health checks from the cache pool buffer all at once 
+        // Store the remaining health checks from the cache pool buffer all at once 
         $this->cache->commit();
     }
 
@@ -207,7 +217,8 @@ class CachedHealthCheckService
      * @param HealthCheckHandlerInterface $healthCheckHandle
      * @return string
      */
-    protected function getCacheKeyFromHealthCheckHandle(HealthCheckHandlerInterface $healthCheckHandle) : string {
+    protected function getCacheKeyFromHealthCheckHandle(HealthCheckHandlerInterface $healthCheckHandle): string 
+    {
         return self::CACHE_POOL_PREFIX . $healthCheckHandle->getHealthCheckId();
     }
 }
