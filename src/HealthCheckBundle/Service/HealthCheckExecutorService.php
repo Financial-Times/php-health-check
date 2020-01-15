@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace FT\HealthCheckBundle\Service;
 
@@ -46,10 +47,11 @@ class HealthCheckExecutorService
      * @param HealthCheckHandlerInterface[] $healthCheckHandles
      * @return HealthCheck[]
      */
-    public function runAll(array $healthCheckHandles) : array
+    public function runAll(array $healthCheckHandles): array
     {
         $result = array_map([$this, 'run'], $healthCheckHandles);
         $this->cachedHealthCheckService->commit();
+        
         return $result;
     }
 }
