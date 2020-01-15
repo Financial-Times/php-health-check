@@ -12,7 +12,8 @@ use FT\HealthCheckBundle\EventListener\HealthCheckListener;
 /**
  * @coversDefaultClass \FT\HealthCheckBundle\EventListener\HealthCheckListener
  */
-class HealthCheckListenerTest extends TestCase{
+class HealthCheckListenerTest extends TestCase
+{
     /**
      * The mock health check controller
      *
