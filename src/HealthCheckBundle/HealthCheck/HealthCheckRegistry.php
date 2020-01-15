@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace FT\HealthCheckBundle\HealthCheck;
 
@@ -37,7 +38,7 @@ class HealthCheckRegistry {
      * @param HealthCheckHandlerInterface $healthCheck
      * @return void
      */
-    public function registerHealthCheck(HealthCheckHandlerInterface $healthCheck) : void{
+    public function registerHealthCheck(HealthCheckHandlerInterface $healthCheck): void{
         $healthCheckId = $healthCheck->getHealthCheckId();
 
         if(array_key_exists($healthCheckId, $this->healthCheckIdToRunOrderMap)){
@@ -69,7 +70,7 @@ class HealthCheckRegistry {
      * @param string $healthCheckId
      * @return HealthCheckHandlerInterface|null
      */
-    public function getHealthCheckById(string $healthCheckId) : ?HealthCheckHandlerInterface 
+    public function getHealthCheckById(string $healthCheckId): ?HealthCheckHandlerInterface 
     {
         if(!array_key_exists($healthCheckId, $this->healthCheckIdToRunOrderMap)){
             return null;
