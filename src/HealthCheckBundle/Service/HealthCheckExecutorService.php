@@ -50,8 +50,11 @@ class HealthCheckExecutorService
     public function runAll(array $healthCheckHandles): array
     {
         $result = array_map([$this, 'run'], $healthCheckHandles);
-        $this->cachedHealthCheckService->commit();
-        
+
+        //Try to save any health checks but otherwise fail gracefully
+        try {
+            $this->cachedHealthCheckService->commit();
+        } catch(Exception $e){}
         return $result;
     }
 }

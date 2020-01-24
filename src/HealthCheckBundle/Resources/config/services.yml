@@ -21,7 +21,10 @@ services:
             - '@service_container'
         calls:
             - [setCachePoolFromServiceId, ["@=container.hasParameter('health_check.cache_pool') ? parameter('health_check.cache_pool') : ''"]]
-    
+        
+        # Lazy load service to fix a an issue where the run_first option was not being respected as a connection to the
+        # configured cache pool was being opened when dependency injecting health_check.service.cache to other services.
+        lazy:  true
     health_check.service.executor:
         class: FT\HealthCheckBundle\Service\HealthCheckExecutorService
         arguments:

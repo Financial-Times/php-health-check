@@ -162,7 +162,7 @@ class CachedHealthCheckService
      * @param HealthCheckHandlerInterface $healthCheckHandle
      * @return HealthCheck|null
      */
-    protected function getHealthCheckFromCache(HealthCheckHandlerInterface $healthCheckHandle): ?HealthCheck
+    protected function getHealthCheckFromCache(HealthCheckHandlerInterface $healthCheckHandle): ?CacheItemInterface
     {
         return  $this->cache->getItem(
             $this->getCacheKeyFromHealthCheckHandle($healthCheckHandle)
