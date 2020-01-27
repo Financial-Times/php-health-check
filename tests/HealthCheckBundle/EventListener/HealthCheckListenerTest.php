@@ -126,7 +126,7 @@ class HealthCheckListenerTest extends TestCase
     
     }
     
-    protected function runHealthCheck() : void {
+    protected function tearDown(): void {
         Mockery::close();
     }
 }
