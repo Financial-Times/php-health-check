@@ -70,12 +70,8 @@ class ConfigurableHealthCheckHandler implements HealthCheckHandlerInterface
      */
     public function getHealthCheckInterval(): ?int
     {
-        $interval = $this->hasParameter('interval') ?
+        return $this->hasParameter('interval') ?
             $this->getParameter('interval') :
-            false;
-
-        return (\is_int($interval) || null === $interval) ?
-            $interval :
             $this->healthCheckHandle->getHealthCheckInterval();
     }
 
@@ -87,7 +83,7 @@ class ConfigurableHealthCheckHandler implements HealthCheckHandlerInterface
     public function getHealthCheckId(): string
     {
         return $this->hasParameter('id') ?
-            $this->getParameter('interval') :
+            $this->getParameter('id') :
             $this->healthCheckHandle->getHealthCheckId();
     }
 
