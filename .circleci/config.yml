@@ -1,6 +1,32 @@
 version: 2.0
 jobs:
-  run-tests:
+  run-tests-71:
+    docker:
+      - image: circleci/php:7.1-cli
+    steps:
+      - checkout
+      - run:
+          name: Install Composer
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
+            sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+            php -r "unlink('composer-setup.php');"
+      - restore_cache:
+          keys:
+            - composer-cache-7.1-{{ checksum "composer.json" }}
+      - run:
+          name: Run composer install
+          command: composer install --ignore-platform-reqs --no-scripts --no-progress --no-interaction
+      - save_cache:
+          key: composer-cache-7.1-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - bin
+      - run:
+          name: Run tests
+          command: php ./bin/phpunit
+  run-tests-72:
     docker:
       - image: circleci/php:7.2-cli
     steps:
@@ -14,12 +40,64 @@ jobs:
             php -r "unlink('composer-setup.php');"
       - restore_cache:
           keys:
-            - composer-cache-{{ checksum "composer.json" }}
+            - composer-cache-7.2-{{ checksum "composer.json" }}
       - run:
           name: Run composer install
           command: composer install --ignore-platform-reqs --no-scripts --no-progress --no-interaction
       - save_cache:
-          key: composer-cache-{{ checksum "composer.json" }}
+          key: composer-cache-7.2-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - bin
+      - run:
+          name: Run tests
+          command: php ./bin/phpunit
+  run-tests-73:
+    docker:
+      - image: circleci/php:7.3-cli
+    steps:
+      - checkout
+      - run:
+          name: Install Composer
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
+            sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+            php -r "unlink('composer-setup.php');"
+      - restore_cache:
+          keys:
+            - composer-cache-7.3-{{ checksum "composer.json" }}
+      - run:
+          name: Run composer install
+          command: composer install --ignore-platform-reqs --no-scripts --no-progress --no-interaction
+      - save_cache:
+          key: composer-cache-7.3-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - bin
+      - run:
+          name: Run tests
+          command: php ./bin/phpunit
+  run-tests-74:
+    docker:
+      - image: circleci/php:7.4-cli
+    steps:
+      - checkout
+      - run:
+          name: Install Composer
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
+            sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+            php -r "unlink('composer-setup.php');"
+      - restore_cache:
+          keys:
+            - composer-cache-7.4-{{ checksum "composer.json" }}
+      - run:
+          name: Run composer install
+          command: composer install --ignore-platform-reqs --no-scripts --no-progress --no-interaction
+      - save_cache:
+          key: composer-cache-7.4-{{ checksum "composer.json" }}
           paths:
             - vendor
             - bin
@@ -31,5 +109,8 @@ workflows:
   version: 2
   run-unit-tests:
     jobs:
-      - run-tests
+      - run-tests-71
+      - run-tests-72
+      - run-tests-73
+      - run-tests-74
     
