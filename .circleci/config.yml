@@ -23,6 +23,7 @@ jobs:
           paths:
             - vendor
             - bin
+            - composer.lock
       - run:
           name: Run tests
           command: php ./bin/phpunit
@@ -49,6 +50,7 @@ jobs:
           paths:
             - vendor
             - bin
+            - composer.lock
       - run:
           name: Run tests
           command: php ./bin/phpunit
@@ -75,6 +77,7 @@ jobs:
           paths:
             - vendor
             - bin
+            - composer.lock
       - run:
           name: Run tests
           command: php ./bin/phpunit
@@ -101,6 +104,7 @@ jobs:
           paths:
             - vendor
             - bin
+            - composer.lock
       - run:
           name: Run tests
           command: php ./bin/phpunit
