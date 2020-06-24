@@ -7,6 +7,8 @@ Singular health checks can be run by using their id found at `/__health/{HealthC
 
 Health checks in this package conform to the FT Health Check Standard.
 
+Requires PHP v7.1 +
+
 ## Installation
 Add this to your `app/config/routing.yml` config file:
 ```yml 
