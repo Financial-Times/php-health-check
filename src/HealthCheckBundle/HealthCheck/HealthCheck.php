@@ -4,6 +4,7 @@ namespace FT\HealthCheckBundle\HealthCheck;
 
 use DateTime;
 use Exception;
+use Throwable;
 
 /**
  * This class represents the data that makes up a single FT health check.
@@ -139,13 +140,24 @@ class HealthCheck
 
     /**
      * Formats an exception to an output for the healthcheck. Note that this overrides any output given in {@see self::withCheckOutput()}.
-     *
+     * @deprecated Will be replaced with {@see withCheckOutputThrowable} 
      * @param Exception $exception
      * @return HealthCheck
      */
     public function withCheckOutputException(Exception $exception): self
     {
-        $this->check['checkOutput'] = 'Exception thrown: ' . \get_class($exception);
+        return $this->withCheckOutputThrowable($exception);
+    }
+
+    /**
+     * Formats a Throwable to an output for the healthcheck. Note that this overrides any output given in {@see self::withCheckOutput()}.
+     *
+     * @param Throwable $throwable
+     * @return HealthCheck
+     */
+    public function withCheckOutputThrowable(Throwable $throwable): self
+    {
+        $this->check['checkOutput'] = 'Error or Exception thrown: ' . \get_class($throwable);
 
         return $this;
     }

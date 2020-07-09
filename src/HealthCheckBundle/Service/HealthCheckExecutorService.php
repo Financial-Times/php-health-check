@@ -8,6 +8,7 @@ use FT\HealthCheckBundle\HealthCheck\HealthCheck;
 use FT\HealthCheckBundle\Factory\HealthCheckFactory;
 use FT\HealthCheckBundle\Service\CachedHealthCheckService;
 use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
+use Throwable;
 
 /**
  * Service used to run given health checks
@@ -36,7 +37,7 @@ class HealthCheckExecutorService
     {
         try {
             return $this->cachedHealthCheckService->runHealthCheckHandle($healthCheckHandle);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
            return HealthCheckFactory::buildFailingHealthCheck($healthCheckHandle, $e);
         }
     }
