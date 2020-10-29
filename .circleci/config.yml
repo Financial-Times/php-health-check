@@ -10,7 +10,7 @@ jobs:
           command: |
             php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
             php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
-            sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+            sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer --1
             php -r "unlink('composer-setup.php');"
       - restore_cache:
           keys:
@@ -37,7 +37,7 @@ jobs:
           command: |
             php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
             php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
-            sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+            sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer --1
             php -r "unlink('composer-setup.php');"
       - restore_cache:
           keys:
@@ -71,7 +71,7 @@ jobs:
             - composer-cache-7.3-{{ checksum "composer.json" }}
       - run:
           name: Run composer install
-          command: composer install --no-scripts --no-progress --no-interaction
+          command: composer install --no-scripts --no-progress --no-interaction --1
       - save_cache:
           key: composer-cache-7.3-{{ checksum "composer.json" }}
           paths:
