@@ -5,9 +5,9 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use FT\HealthCheckBundle\Controller\HealthCheckController;
 use FT\HealthCheckBundle\EventListener\HealthCheckListener;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
  * @coversDefaultClass \FT\HealthCheckBundle\EventListener\HealthCheckListener
@@ -34,8 +34,8 @@ class HealthCheckListenerTest extends TestCase
      */
     public function test_onRequest_onlyAppliesToTheMasterRequest()
     {
-        $getResponseEvent = Mockery::mock(GetResponseEvent::class);
-        $getResponseEvent
+        $responseEvent = Mockery::mock(ResponseEvent::class);
+        $responseEvent
         // Handle request for if event is master company
             ->shouldReceive('isMasterRequest')
             ->andReturn(false)
@@ -43,7 +43,7 @@ class HealthCheckListenerTest extends TestCase
 
         $healthCheckListener = new HealthCheckListener($this->healthCheckController);
 
-        $this->assertNull($healthCheckListener->onRequest($getResponseEvent));
+        $this->assertNull($healthCheckListener->onRequest($responseEvent));
     }
 
     /**
