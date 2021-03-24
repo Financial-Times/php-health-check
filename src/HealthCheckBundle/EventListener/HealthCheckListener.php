@@ -2,9 +2,8 @@
 
 namespace FT\HealthCheckBundle\EventListener;
 
-use Exception;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use FT\HealthCheckBundle\Controller\HealthCheckController;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
  * This event listner is used to force health checks to run before any other user defined code is executed.
@@ -22,7 +21,7 @@ class HealthCheckListener{
         $this->healthCheckController = $healthCheckController;
     }
 
-    public function onRequest(GetResponseEvent $event)
+    public function onRequest(RequestEvent $event)
     {
         
         // We only care about the master request in this instance
