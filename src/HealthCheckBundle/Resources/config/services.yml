@@ -1,6 +1,7 @@
 services:
     health_check.controller:
         class: FT\HealthCheckBundle\Controller\HealthCheckController
+        public: true
         arguments:
             - '@health_check.factory'
             - '@health_check.registry'
