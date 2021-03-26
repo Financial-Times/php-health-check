@@ -71,7 +71,7 @@ class HealthCheckListenerTest extends TestCase
                 ->andReturn($path)
                 ->getMock();
 
-            $getResponseEvent = Mockery::mock(GetResponseEvent::class);
+            $getResponseEvent = Mockery::mock(ResponseEvent::class);
             $getResponseEvent
                 // Handle request for if event is master company
                 ->shouldReceive('isMasterRequest')
@@ -102,7 +102,7 @@ class HealthCheckListenerTest extends TestCase
             ->andReturn('/__health')
             ->getMock();
 
-        $getResponseEvent = Mockery::mock(GetResponseEvent::class);
+        $getResponseEvent = Mockery::mock(ResponseEvent::class);
         $getResponseEvent
             // Handle request for if event is master company
             ->shouldReceive('isMasterRequest')
