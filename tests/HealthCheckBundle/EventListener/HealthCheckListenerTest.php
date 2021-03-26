@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FT\HealthCheckBundle\Controller\HealthCheckController;
 use FT\HealthCheckBundle\EventListener\HealthCheckListener;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 
 /**
  * @coversDefaultClass \FT\HealthCheckBundle\EventListener\HealthCheckListener
@@ -34,7 +34,7 @@ class HealthCheckListenerTest extends TestCase
      */
     public function test_onRequest_onlyAppliesToTheMasterRequest()
     {
-        $responseEvent = Mockery::mock(ResponseEvent::class);
+        $responseEvent = Mockery::mock(KernelEvent::class);
         $responseEvent
         // Handle request for if event is master company
             ->shouldReceive('isMasterRequest')
@@ -71,7 +71,7 @@ class HealthCheckListenerTest extends TestCase
                 ->andReturn($path)
                 ->getMock();
 
-            $getResponseEvent = Mockery::mock(ResponseEvent::class);
+            $getResponseEvent = Mockery::mock(KernelEvent::class);
             $getResponseEvent
                 // Handle request for if event is master company
                 ->shouldReceive('isMasterRequest')
@@ -102,7 +102,7 @@ class HealthCheckListenerTest extends TestCase
             ->andReturn('/__health')
             ->getMock();
 
-        $getResponseEvent = Mockery::mock(ResponseEvent::class);
+        $getResponseEvent = Mockery::mock(KernelEvent::class);
         $getResponseEvent
             // Handle request for if event is master company
             ->shouldReceive('isMasterRequest')
