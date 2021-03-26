@@ -2,12 +2,10 @@
 
 namespace FT\HealthCheckBundle\DependencyInjection;
 
-use FT\HealthCheckBundle\EventListener\HealthCheckListener;
 use FT\HealthCheckBundle\HealthCheck\ConfigurableHealthCheckHandler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 class HealthCheckPass implements CompilerPassInterface
 {

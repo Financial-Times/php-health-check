@@ -5,7 +5,8 @@ Health checks can be found under the `__health` endpoint. Each health check test
 
 Health checks in this package conform to the FT Health Check Standard.
 
-Requires PHP v7.1 +
+Requires PHP v7.2 + and Symfony 5
+
 
 ## Installation
 Add this to your `app/config/routing.yml` config file:
@@ -15,8 +16,20 @@ FT\HealthCheckBundle:
     prefix:   /
 ```
 
+in you `config/bundles.php` file add
+
+```php
+<?php
+
+return [
+    // ... More bundles 
+    FT\HealthCheckBundle\HealthCheckBundle::class => ['all' => true]
+    // ... More bundles
+];
+```
+If the automatically installed recepie is not already used
 ## Creating a health check
-To create a health check you can copy this code under `src/[Your bundle]/Healthchecks/PlaceholderHealthCheck.php`
+To create a health check you can copy this code under `src/Healthchecks/PlaceholderHealthCheck.php`
 
 ```php
 
@@ -149,8 +162,9 @@ To make a healthcheck configurable define the health check as you normally would
 ```yml
 services:
     # Health Checks
-    app.placeholder.health_check:
-        class: YourBundle\HealthCheck\PlaceholderHealthCheck
+    YourBundle\HealthCheck\PlaceholderHealthCheck:
+        autowire: true
+        autoconfigure: true
         tags: [{ name: health_check.configurable, priority: 20 }]
 ```
 

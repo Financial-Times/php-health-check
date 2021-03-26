@@ -89,7 +89,7 @@ class HealthCheckResponseFactory
         $missingKeys = array_diff(self::REQUIRED_KEYS, array_keys($check));
 
         if (!empty($missingKeys)) {
-            $this->logger->log('Missing keys '+json_encode($missingKeys)+' from health check '+json_encode($check));
+            $this->logger->info('Missing keys '+json_encode($missingKeys)+' from health check '+json_encode($check));
         }
 
         return empty($missingKeys);

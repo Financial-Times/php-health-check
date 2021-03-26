@@ -3,16 +3,11 @@
 namespace FT\HealthCheckBundle\Controller;
 
 use Exception;
-use FT\HealthCheckBundle\HealthCheck\HealthCheck;
 use FT\HealthCheckBundle\HealthCheck\HealthCheckRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use FT\HealthCheckBundle\Service\CachedHealthCheckService;
 use FT\HealthCheckBundle\Factory\HealthCheckResponseFactory;
 use FT\HealthCheckBundle\Service\HealthCheckExecutorService;
-use FT\HealthCheckBundle\HealthCheck\HealthCheckHandlerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
-class HealthCheckController extends Controller
+class HealthCheckController
 {
     /**
      * Stores all the handles that should be executed when the {@see self::healthCheckAction} method is called

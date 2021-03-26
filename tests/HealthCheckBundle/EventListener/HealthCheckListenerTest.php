@@ -5,12 +5,13 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use FT\HealthCheckBundle\Controller\HealthCheckController;
 use FT\HealthCheckBundle\EventListener\HealthCheckListener;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 
 /**
  * @coversDefaultClass \FT\HealthCheckBundle\EventListener\HealthCheckListener
+ * @todo Refactor to use real event objects over stubbing them out
  */
 class HealthCheckListenerTest extends TestCase
 {
@@ -34,8 +35,8 @@ class HealthCheckListenerTest extends TestCase
      */
     public function test_onRequest_onlyAppliesToTheMasterRequest()
     {
-        $getResponseEvent = Mockery::mock(GetResponseEvent::class);
-        $getResponseEvent
+        $responseEvent = Mockery::mock(KernelEvent::class);
+        $responseEvent
         // Handle request for if event is master company
             ->shouldReceive('isMasterRequest')
             ->andReturn(false)
@@ -43,7 +44,7 @@ class HealthCheckListenerTest extends TestCase
 
         $healthCheckListener = new HealthCheckListener($this->healthCheckController);
 
-        $this->assertNull($healthCheckListener->onRequest($getResponseEvent));
+        $this->assertNull($healthCheckListener->onRequest($responseEvent));
     }
 
     /**
@@ -71,7 +72,7 @@ class HealthCheckListenerTest extends TestCase
                 ->andReturn($path)
                 ->getMock();
 
-            $getResponseEvent = Mockery::mock(GetResponseEvent::class);
+            $getResponseEvent = Mockery::mock(KernelEvent::class);
             $getResponseEvent
                 // Handle request for if event is master company
                 ->shouldReceive('isMasterRequest')
@@ -102,7 +103,7 @@ class HealthCheckListenerTest extends TestCase
             ->andReturn('/__health')
             ->getMock();
 
-        $getResponseEvent = Mockery::mock(GetResponseEvent::class);
+        $getResponseEvent = Mockery::mock(KernelEvent::class);
         $getResponseEvent
             // Handle request for if event is master company
             ->shouldReceive('isMasterRequest')
