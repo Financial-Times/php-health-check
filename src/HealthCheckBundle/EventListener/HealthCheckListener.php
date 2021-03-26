@@ -21,7 +21,10 @@ class HealthCheckListener{
         $this->healthCheckController = $healthCheckController;
     }
 
-    public function onRequest(RequestEvent $event)
+    /**
+     * @param RequestEvent $event The request event
+     */
+    public function onRequest($event)
     {
         
         // We only care about the master request in this instance

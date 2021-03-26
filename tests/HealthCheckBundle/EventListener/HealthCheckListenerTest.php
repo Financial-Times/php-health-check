@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Event\KernelEvent;
 
 /**
  * @coversDefaultClass \FT\HealthCheckBundle\EventListener\HealthCheckListener
+ * @todo Refactor to use real event objects over stubbing them out
  */
 class HealthCheckListenerTest extends TestCase
 {
