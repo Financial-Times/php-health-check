@@ -128,7 +128,7 @@ class HealthCheckRegistryTest extends TestCase
      */
     public function test_registerHealthCheck_willThrowExceptionOnDuplicateHealthcheck()
     {
-        $this->expectExceptionMessageRegExp('/Registered health checks must give valid unique ID/');
+        $this->expectExceptionMessageMatches('/Registered health checks must give valid unique ID/');
         $healthCheckId = 'MyHealthCheck';
 
         $healthCheckHandle = Mockery::mock(HealthCheckHandlerInterface::class);
