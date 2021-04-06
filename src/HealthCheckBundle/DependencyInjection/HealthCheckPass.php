@@ -88,7 +88,17 @@ class HealthCheckPass implements CompilerPassInterface
      */
     protected function sortConverterIds(array $converterIdsByPriority)
     {
-        asort($converterIdsByPriority);
-        return call_user_func_array('array_merge', $converterIdsByPriority);
+        // Sort by priority
+        ksort($converterIdsByPriority);
+        $converterIdsByPriority = array_reverse($converterIdsByPriority, true);
+
+        //Sort by value if same priority
+        $converterIdsByPriority = array_map(function($array){
+            asort($array);
+            return $array;
+        }, $converterIdsByPriority);
+
+        //Merge down to single array
+        return array_merge(...$converterIdsByPriority);
     }
 }
